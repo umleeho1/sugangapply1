@@ -14,21 +14,9 @@
     </form>
 
     <section class="result-table">
-      <div class="card text-center" style="margin-bottom:15px;">
-        <div class="card-header">
-          속도측정 결과
-        </div>
-        <div class="card-body" style="height:200px;">
-          <h5 class="card-title">(사이트) 접속 기준</h5>
-          <p class="card-text">Uplink Speed : {{ uplink }}</p>
-          <p class="card-text">Downlink Speed : {{downlink}}</p>
-          <p class="card-text">Ping Speed : {{pingspeed}}</p>
-          <p class="card-text">(그 외 지표)</p>
-        </div>
-      </div>
-      
-    {% include "servertime.html" %}
 
+      {% include "components/speedtest_result.html" %}
+      {% include "components/servertime.html" %}
     
     </section>
 

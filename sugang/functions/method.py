@@ -41,8 +41,8 @@ def show_server_time(saveURL):
 def checkSpeed():
     st = speedtest_cli.Speedtest()
     st.get_best_server()
-    up_speed = st.upload() / 1000000
-    down_speed = st.download() / 1000000
+    up_speed = round(st.upload() / 1000000 , 2)
+    down_speed = round(st.download() / 1000000 , 2)
     ping_speed = st.results.ping
     return up_speed, down_speed, ping_speed
     
