@@ -5,7 +5,7 @@
     <!-- 블럭 안에 들어갈 내용-->
 
     <!-- 확인하고자 하는 URL 입력창 & 버튼 -->
-    <form method="post" action="{% url 'sugang:save_URL' %}">
+    <form method="post" action="{% url 'sugang:testURL' %}">
       {% csrf_token %}
       <div class="input-group mb-3 URL-input">
         <button class="btn btn-outline-secondary" type="submit">테스트</button>  
@@ -27,8 +27,9 @@
         </div>
       </div>
       
-      {% include "servertime.html" %}
+    {% include "servertime.html" %}
 
+    
     </section>
 
     <section style="vetical-align:middle;">
@@ -60,3 +61,19 @@
     </section>
 
 {% endblock%}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        setInterval(function() {
+            $.ajax({
+                url: 'loadclock/',
+                success: function(data) {
+                    $('#servertime-container').text(data.current_servertime);
+                }
+            });
+        }, 1000);
+    });
+</script>
+{% endblock %}
