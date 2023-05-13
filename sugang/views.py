@@ -17,29 +17,36 @@ def index(request):
     context = {'current_servertime' : formatted_time}
     return render(request, 'mainpage.html', context)
 
-def save_URL(request):
+def action(request):
+    context = {'current_servertime' : None, 'user_url': None, 'uplink' : None,
+               'downlink': None, 'pingspeed': None}
     if request.method == 'POST':
         if request.POST.get('saveURL') == '':
             return redirect('sugang:main')
         else:
-            saveURL = accessURL(testURL=request.POST.get('saveURL'))
-            saveURL.save()
-            #print(saveURL.id)
-            #데이터베이스에 사용자가 입력한 URL저장
-
-            return show_server_time(request, saveURL)
-            #저장된 saveURL을 가지고 서버시간 표시
+            method.save_URL(request)
+            temp = method.show_server_time(method.get_accessurl_by_highest_id())
+            context['current_servertime'], context['user_url'] = temp[0], temp[1]
+            temp = method.checkSpeed()
+            context['uplink'], context['downlink'], context['pingspeed'] = temp[0], temp[1], temp[2]
+            
+            return render(request, 'mainpage.html', context)
     else:
         return redirect('sugang:main')
+        
+    return render()
+
     
-def show_server_time(request, saveURL):
+'''
+    def show_server_time(request, saveURL):
     try:
-        responseURL = saveURL.testURL
-        serverTime = method.calculate_time(responseURL)
-        context = {'current_servertime' : serverTime, 'user_url' : responseURL}
+        targetURL = saveURL.testURL
+        serverTime = method.calculate_time(targetURL)
+        context = {'current_servertime' : serverTime, 'user_url' : targetURL}
         return render(request, 'mainpage.html', context)
     except:
         return HttpResponse("Could not retrieve server time.")
+'''
     
 def reload_serverclock(request):
     target_url = method.get_accessurl_by_highest_id()
