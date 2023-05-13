@@ -11,11 +11,7 @@
     <tbody>
       <tr>
         <td class="text-center" style="height:100px; vertical-align:middle; font-size: 1.5em;">
-          {% if current_servertime %}
-          <p id="servertime-container">서버시간 : {{ current_servertime }}</p>
-          {% else %}
-          <p>서버시간 : {% now "Y년 m월 d일 H시 i분 s초" %}</p>
-          {% endif %}
+          <p id="servertime-container">{{ current_servertime }}</p>
         </td>
       </tr>
     </tbody>

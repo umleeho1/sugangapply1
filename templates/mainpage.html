@@ -67,8 +67,14 @@
 <script>
     $(document).ready(function() {
         setInterval(function() {
+            var ajaxURL = '{{ user_url }}';
+            if (ajaxURL === '') {
+                ajaxURL = 'load_defaultclock/';
+            } else {
+                ajaxURL = 'loadclock/';
+            }
             $.ajax({
-                url: 'loadclock/',
+                url: ajaxURL,
                 success: function(data) {
                     $('#servertime-container').text(data.current_servertime);
                 }
