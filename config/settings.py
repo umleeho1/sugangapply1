@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.humanize',
     'sugang.apps.SugangConfig',
     'django.contrib.admin',
     'django.contrib.auth',
