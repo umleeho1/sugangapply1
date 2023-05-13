@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+
+app_name = 'config'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/', include('sugang.urls')),
-    path('', views.welcome_page),
+    path('', views.welcome_page, name='welcome_page'),
 ]

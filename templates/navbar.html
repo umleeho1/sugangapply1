@@ -1,6 +1,6 @@
 <!-- 모든 페이지 상단에 공통으로 나타날 퀵메뉴바  -->
     <div class="container-fluid">
-        <a class="navbar-brand" href="{}">SUGANG APPLY</a>
+        <a class="navbar-brand" href="{% url 'sugang:main'%}">SUGANG APPLY</a>
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent"
@@ -14,7 +14,7 @@
                 <li class="nav-item"><a class="nav-link" href="">메뉴1</a></li>
                 <li><a class="nav-link" href="admin/">관리자모드</a></li>
                 <li><a class="nav-link" href="">메뉴2</a></li>
-                <li><a class="nav-link" href="">처음으로</a></li>
+                <li><a class="nav-link" href="{% url 'welcome_page'%}">처음으로</a></li>
             </ul>
         </div>
         <span>
