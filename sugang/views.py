@@ -2,10 +2,6 @@ import datetime
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
-import urllib.request
-import urllib.error
-import time
-import requests
 from .functions import method
 from django.http import JsonResponse
 
@@ -33,21 +29,8 @@ def action(request):
             return render(request, 'mainpage.html', context)
     else:
         return redirect('sugang:main')
-        
-    return render()
 
-    
-'''
-    def show_server_time(request, saveURL):
-    try:
-        targetURL = saveURL.testURL
-        serverTime = method.calculate_time(targetURL)
-        context = {'current_servertime' : serverTime, 'user_url' : targetURL}
-        return render(request, 'mainpage.html', context)
-    except:
-        return HttpResponse("Could not retrieve server time.")
-'''
-    
+
 def reload_serverclock(request):
     target_url = method.get_accessurl_by_highest_id()
     server_time = method.calculate_time(target_url.testURL)

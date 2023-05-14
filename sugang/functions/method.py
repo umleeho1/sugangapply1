@@ -15,6 +15,7 @@ def get_accessurl_by_highest_id():
     
 def calculate_time(targetURL):  #targetURL 은 URLtype
     response = urllib.request.urlopen(targetURL).headers['Date']
+    print(response)
     datetime_obj = datetime.datetime.strptime(response, "%a, %d %b %Y %H:%M:%S %Z")
     datetime_obj += datetime.timedelta(hours=9)
     # 원하는 형식으로 포맷팅

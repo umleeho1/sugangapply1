@@ -77,6 +77,7 @@ section.main-section {
     width: 82%;
     height: 700px;
     float: right;
+    overflow-y: scroll;
 }
 
 section.default-main {
@@ -146,24 +147,29 @@ div.advertisements {
     background-color: #6a6a6a;
 }
 
-.main-rankingbox {
-    margin-left: 10px;
-    margin-right: 10px;
-    float: left;
-    width: 65%;
-    height: 180px;
-}
-
 .main-ratebox {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 15px auto;
     float: left;
     width: 30%;
-    height: 180px;
+    height: 260px;
 }
 
 .table-responsive {
     width: 100%;
     overflow-x: auto;
     overflow-y: auto;
+}
+
+.main-alarmbox {
+    margin: 15px auto;
+    float: left;
+    width: 30%;
+    height: 260px;
+}
+
+.main-rankingbox {
+    margin: 15px auto;
+    float: left;
+    width: 30%;
+    height: 260px;
 }
