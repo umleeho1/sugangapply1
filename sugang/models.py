@@ -8,11 +8,7 @@ class accessURL(models.Model):
         return self.testURL
 
 class resultInfo(models.Model):
-    toAccessURL = models.ForeignKey(accessURL, on_delete=models.CASCADE)
-    #accessURL을 외부키로 받아옴.
+
     pingSpeed = models.FloatField()
     upSpeed = models.FloatField()
     downSpeed = models.FloatField()
-    serverTime = models.TimeField()
-    speedRanking = models.IntegerField()
-
