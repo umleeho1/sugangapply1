@@ -60,6 +60,6 @@ def get_speed_percentile(down_speed):
     # 속도 데이터가 존재할 경우 각 속도에 대한 순위를 계산하고, down_speed의 순위를 구합니다.
     rank = sum(down_speed > s for s in speed_data)
     percentile = round(rank / len(speed_data) * 100, 2)
-    percentile = 100 - percentile
+    percentile = round(100 - percentile, 2)
     
     return percentile
