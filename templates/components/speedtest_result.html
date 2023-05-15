@@ -1,0 +1,21 @@
+<div class="card text-center" style="margin-bottom:15px;">
+  <div class="card-header">
+      속도측정 결과
+  </div>
+  <div class="card-body card-speedresult" style="height:150px;">
+      <style>
+          .card-speedresult h4 {
+              margin: 0px auto;
+              margin-bottom: 10px;
+          }
+          .card-speedresult p:not(:first-child) {
+              margin: 0;
+              font-size:18px;
+          }
+      </style>
+      <h4 class="card-title">{% now "Y년 m월 d일 H시 i분 s초" %} 기준</h4>
+      <p class="card-text">Uplink Speed : {{ result.upSpeed|default:0.00 }} MB/s</p>
+      <p class="card-text">Downlink Speed : {{ result.downSpeed|default:0.00 }} MB/s</p>
+      <p class="card-text">Ping Speed : {{ result.pingSpeed|default:0 }} ms</p>
+  </div>
+</div>

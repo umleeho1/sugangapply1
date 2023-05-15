@@ -1,0 +1,89 @@
+{%load static%}
+<div class="main-alarmbox">
+    <div class="card">
+        <div class="card-header text-center">
+        알람 설정하기
+        </div>
+        <div class="card-body" style="height:200px;">
+        <form id="alarm-form">
+                <div class="form-group">
+                    <input type="time" class="form-control" id="alarm-time">
+                </div>
+                <div class="form-group">
+                    <label>알람 울릴시간</label>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="set_3min" name="set_alarm" value="180">
+                    <label class="form-check-label" for="set_3min">3분 전</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="set_1min" name="set_alarm" value="60">
+                    <label class="form-check-label" for="set_1min">1분 전</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="set_30sec" name="set_alarm" value="30">
+                    <label class="form-check-label" for="set_30sec">30초 전</label>
+                </div>
+            </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin:auto;">알람 설정</button>
+        </form>          
+        </div>
+    </div>
+</div>
+
+<script>
+    var timeoutID; // 알람 예약에 사용되는 타임아웃 식별자
+
+    document.getElementById("alarm-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // 폼 제출 기본 동작 막기
+
+        var audio = new Audio("{% static 'sound/beep.mp3' %}");
+        var alarmTimeInput = document.getElementById("alarm-time");
+        var selectedRadio = document.querySelector('input[name="set_alarm"]:checked');
+
+        if (alarmTimeInput && selectedRadio) {
+            var alarmTime = alarmTimeInput.value;
+            var alarmOffset = parseInt(selectedRadio.value, 10);
+          
+            var alarmDateTime = new Date();
+            var [hours, minutes] = alarmTime.split(":");
+            var isPM = alarmTime.indexOf("PM") > -1;
+            
+            if (isPM && parseInt(hours, 10) !== 12) {
+              hours = (parseInt(hours, 10) + 12).toString();
+            } else if (!isPM && parseInt(hours, 10) === 12) {
+              hours = "0";
+            }
+          
+            alarmDateTime.setHours(parseInt(hours, 10));
+            alarmDateTime.setMinutes(parseInt(minutes, 10));
+            alarmDateTime.setMilliseconds(alarmDateTime.getMilliseconds() - (alarmOffset * 1000));
+
+            var currentTime = new Date();
+
+            if (alarmDateTime > currentTime) {
+                var timeDifference = alarmDateTime.getTime() - currentTime.getTime();
+
+                // 기존 알람 예약 취소
+                if (timeoutID) {
+                    clearTimeout(timeoutID);
+                }
+
+                // 새로운 알람 예약
+                timeoutID = setTimeout(function() {
+                    // 여기에서 알람 동작을 수행하도록 코드를 작성하세요.
+                    audio.play();
+                    alert(timeDifference)
+                }, timeDifference);
+
+                // 팝업 창 띄우기
+                alert("알람이 설정되었습니다!");
+            } else {
+                // 알람 시간이 현재 시간보다 이전인 경우
+                alert("알람을 설정할 수 없습니다!");
+            }
+        } else {
+            alert("알람기준시간 혹은 알람울릴시간을 선택해주세요.")
+        }
+    });
+</script>
+

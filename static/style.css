@@ -1,0 +1,175 @@
+div.URL-input {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 98%;
+}
+
+#chatbox {
+    height: 160px;
+    padding: 10px;
+    overflow-y: scroll;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background: rgb(173, 255, 255);
+}
+
+#message {
+    width: 80%;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#send {
+    width: 15%;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#widget {
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#total,
+#today {
+    text-align: center;
+}
+
+#total p,
+#today p {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 5px 0px
+}
+
+.table-custom {
+    --bs-table-bg: #636f7c;
+    --bs-table-striped-bg: #2c3034;
+    --bs-table-striped-color: #fff;
+    --bs-table-active-bg: #818c95;
+    --bs-table-active-color: #fff;
+    --bs-table-hover-bg: #323539;
+    --bs-table-hover-color: #fff;
+    color: #fff;
+    border-color: #373b3e
+}
+
+header {
+    height: 57px;
+}
+
+footer {
+    height: 100px;
+    background-color: rgb(186, 255, 254);
+    vertical-align: middle;
+    text-align: center;
+}
+
+section.main-section {
+    width: 82%;
+    height: 700px;
+    float: right;
+    overflow-y: scroll;
+}
+
+section.default-main {
+    width: 100%;
+    height: 700px;
+    vertical-align: center;
+}
+
+aside.main-aside {
+    width: 18%;
+    background-color: rgb(233, 233, 233, .8);
+    height: 700px;
+}
+
+*:not([text-selectable]) {
+    user-select: none;
+}
+
+a.sidebar-menu {
+    font-size: 0.9em;
+    margin: auto;
+    color: black;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+div.sidebar-menubox {
+    border: 2px solid rgb(228, 228, 228);
+    border-radius: 10px;
+    padding: 6px;
+    margin: 10px 0px;
+}
+
+div.sidebar-chatbox {
+    border: 2px solid rgb(228, 228, 228);
+    border-radius: 10px;
+    height: 80px;
+    padding: 10px;
+    overflow-y: scroll;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background: aqua;
+}
+
+div.sidebar-adbox {
+    border: 2px solid rgb(228, 228, 228);
+    padding: 6px;
+    margin: 10px 0px;
+    height: 100px;
+    background-color: #9f9f9f;
+    text-align: center;
+    vertical-align: middle;
+}
+
+section.result-table {
+    vertical-align: middle;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+div.advertisements {
+    bottom: 0;
+    height: 100px;
+    background-color: #6a6a6a;
+}
+
+.main-ratebox {
+    margin: 15px auto;
+    float: left;
+    width: 30%;
+    height: 260px;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.main-alarmbox {
+    margin: 15px auto;
+    float: left;
+    width: 30%;
+    height: 260px;
+}
+
+.main-rankingbox {
+    margin: 15px auto;
+    float: left;
+    width: 30%;
+    height: 260px;
+}
