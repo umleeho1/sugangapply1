@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+    <!-- 블럭 안에 들어갈 내용-->
+
+    <!-- 확인하고자 하는 URL 입력창 & 버튼 -->
+    <form method="post" action="{% url 'sugang:testURL' %}">
+      {% csrf_token %}
+      <div class="input-group mb-3 URL-input">
+        <button class="btn btn-outline-secondary" type="submit">테스트</button>  
+        <input id="saveURL" name="saveURL" type="text" class="form-control px-3" placeholder="접속하고자 하는 URL을 입력해주세요.">
+      </div>
+    </form>
+
+    <section class="result-table">
+      {% include "components/servertime.html" %}
+      {% include "components/speedtest_result.html" %}    
+    </section>
+
+    <section style="display: flex; align-items: center; justify-content: center; height: 260px;">
+      <!-- 결과화면 두 곳을 float할 구역-->
+      
+      {% include 'components/set_alarm.html' %}
+      {% include 'components/show_ranking.html' %}
+      {% include 'components/show_successrate.html' %}
+
+    </section>
+  
+{% endblock%}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        setInterval(function() {
+            var ajaxURL = '{{ user_url }}';
+            if (ajaxURL === '') {
+                ajaxURL = 'load_defaultclock/';
+            } else {
+                ajaxURL = 'loadclock/';
+            }
+            $.ajax({
+                url: ajaxURL,
+                success: function(data) {
+                    $('#servertime-container').text(data.current_servertime);
+                }
+            });
+        }, 1000);
+    });
+</script>
+{% endblock %}
