@@ -1,0 +1,27 @@
+<style>
+    .card-speedrank {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .card-speedrank p {
+        margin: 0;
+        font-size: 30px;
+    }
+</style>
+
+<div class="main-rankingbox">
+    <div class="card text-center">
+        <div class="card-header">
+            인터넷 속도 랭킹
+        </div>
+        <div class="card-body card-speedrank" style="height:200px;">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <p class="card-text" style="margin: 0 auto;">상위 {{ speed_ranking|default:'100'}}%입니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
