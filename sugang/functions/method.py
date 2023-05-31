@@ -63,3 +63,21 @@ def get_speed_percentile(down_speed):
     percentile = round(100 - percentile, 2)
     
     return percentile
+
+def checkUpLink():
+    st = speedtest_cli.Speedtest()
+    st.get_best_server()
+    up_speed = round(st.upload() / 1000000 , 2)
+    return up_speed
+
+def checkDownLink():
+    st = speedtest_cli.Speedtest()
+    st.get_best_server()
+    down_speed = round(st.download() / 1000000 , 2)
+    return down_speed
+
+def checkPing():
+    st = speedtest_cli.Speedtest()
+    st.get_best_server()
+    return round(st.results.ping, 1)
+

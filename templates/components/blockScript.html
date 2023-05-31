@@ -1,0 +1,133 @@
+{% load static %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        var checkUpURL = 'checkUpLink/';
+        var checkDownURL = 'checkDownLink/';
+        var checkPingURL = 'checkPing/';
+      
+        updateDownlink();
+        updateUplink();
+        updatePingSpeed();
+        
+        setInterval(updateClock, 1000);
+        
+        setInterval(updateDownlink, 30000);
+        setInterval(updateUplink, 35000);
+        setInterval(updatePingSpeed, 10000);
+        
+      
+        function updateClock() {
+          var loadClockURL = '{% if user_url %}loadclock/{% else %}load_defaultclock/{% endif %}';
+          // Load Clock
+          $.ajax({
+            url: loadClockURL,
+            success: function(data) {
+              $('#servertime-container').text(data.current_servertime);
+            },
+            error: function(xhr) {
+              console.log(xhr.status + ': ' + xhr.statusText);
+            }
+          });
+        }
+        
+        
+        function updateUplink() {
+          $.ajax({
+            url: checkUpURL,
+            success: function(data) {
+              $('#uplinkSpeed').text(data.upSpeed);
+            },
+            error: function(xhr) {
+              console.log(xhr.status + ': ' + xhr.statusText);
+            }
+          });            
+        }
+
+        function updateDownlink() {
+          $.ajax({
+            url: checkDownURL,
+            success: function(data) {
+              $('#downlinkSpeed').text(data.downSpeed);
+              $('#speedRanking').text(data.speed_ranking);
+            },
+            error: function(xhr) {
+              console.log(xhr.status + ': ' + xhr.statusText);
+            }
+          });
+          
+        }
+
+        function updatePingSpeed() {
+          $.ajax({
+            url: checkPingURL,
+            success: function(data) {
+              $('#pingSpeed').text(data.pingSpeed);
+            },
+            error: function(xhr) {
+              console.log(xhr.status + ': ' + xhr.statusText);
+            }
+          });            
+        }
+      
+    });
+
+</script>
+<script>
+    var timeoutID; // 알람 예약에 사용되는 타임아웃 식별자
+
+    document.getElementById("alarm-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // 폼 제출 기본 동작 막기
+
+        var audio = new Audio("{% static 'sound/beep.mp3' %}");
+        var alarmTimeInput = document.getElementById("alarm-time");
+        var selectedRadio = document.querySelector('input[name="set_alarm"]:checked');
+
+        if (alarmTimeInput && selectedRadio) {
+            var alarmTime = alarmTimeInput.value;
+            var alarmOffset = parseInt(selectedRadio.value, 10);
+          
+            var alarmDateTime = new Date();
+            var [hours, minutes] = alarmTime.split(":");
+            var isPM = alarmTime.indexOf("PM") > -1;
+            
+            if (isPM && parseInt(hours, 10) !== 12) {
+              hours = (parseInt(hours, 10) + 12).toString();
+            } else if (!isPM && parseInt(hours, 10) === 12) {
+              hours = "0";
+            }
+          
+            alarmDateTime.setHours(parseInt(hours, 10));
+            alarmDateTime.setMinutes(parseInt(minutes, 10));
+            alarmDateTime.setMilliseconds(alarmDateTime.getMilliseconds() - (alarmOffset * 1000));
+
+            var currentTime = new Date();
+
+            if (alarmDateTime > currentTime) {
+                var timeDifference = alarmDateTime.getTime() - currentTime.getTime();
+
+                // 기존 알람 예약 취소
+                if (timeoutID) {
+                    clearTimeout(timeoutID);
+                }
+
+                // 새로운 알람 예약
+                timeoutID = setTimeout(function() {
+                    // 여기에서 알람 동작을 수행하도록 코드를 작성하세요.
+                    audio.play();
+                    alert(timeDifference)
+                }, timeDifference);
+
+                // 팝업 창 띄우기
+                alert("알람이 설정되었습니다!");
+            } else {
+                // 알람 시간이 현재 시간보다 이전인 경우
+                alert("알람을 설정할 수 없습니다!");
+            }
+        } else {
+            alert("알람기준시간 혹은 알람울릴시간을 선택해주세요.")
+        }
+    });
+</script>
