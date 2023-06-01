@@ -3,17 +3,17 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-
+        var ClockInterval = 1000;
         var checkUpURL = 'checkUpLink/';
         var checkDownURL = 'checkDownLink/';
         var checkPingURL = 'checkPing/';
-      
+
+        updateClock();
         updateDownlink();
         updateUplink();
         updatePingSpeed();
         
-        setInterval(updateClock, 1000);
-        
+        setInterval(updateClock, ClockInterval);
         setInterval(updateDownlink, 30000);
         setInterval(updateUplink, 35000);
         setInterval(updatePingSpeed, 10000);
@@ -21,11 +21,13 @@
       
         function updateClock() {
           var loadClockURL = '{% if user_url %}loadclock/{% else %}load_defaultclock/{% endif %}';
+      
           // Load Clock
           $.ajax({
             url: loadClockURL,
             success: function(data) {
               $('#servertime-container').text(data.current_servertime);
+              $('#InternetDelay').text(data.InternetDelay);
             },
             error: function(xhr) {
               console.log(xhr.status + ': ' + xhr.statusText);

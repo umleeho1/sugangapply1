@@ -12,4 +12,7 @@ urlpatterns = [
     path('result/checkUpLink/', views.TestUpLink),
     path('result/checkDownLink/', views.TestDownLink),
     path('result/checkPing/', views.TestPing),
+    path('checkUpLink/', views.TestUpLink),
+    path('checkDownLink/', views.TestDownLink),
+    path('checkPing/', views.TestPing),
 ]

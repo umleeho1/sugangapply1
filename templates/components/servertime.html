@@ -9,9 +9,22 @@
       </tr>
     </tead>
     <tbody>
-      <tr>
+      <tr class="table-servertime">
+        <style>
+          .table-servertime {
+            display: flex;
+            justify-content: center;
+          }
+          .table-servertime p{
+            font-size : 20px;
+          }
+          .table-servertime h3{
+            margin-bottom : 15px;
+          }
+        </style>
         <td class="text-center" style="height:100px; vertical-align:middle;">
-          <h3 id="servertime-container">{{ current_servertime }}</h3>
+          <h2><span id="servertime-container">{{ current_servertime }}</span></h3>
+          <p><span id="InternetDelay"></span>ms delayed</p>
         </td>
       </tr>
     </tbody>
