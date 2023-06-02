@@ -10,6 +10,7 @@
     var checkUpURL = 'checkUpLink/';
     var checkDownURL = 'checkDownLink/';
     var checkPingURL = 'checkPing/';
+    var csrftoken = '{{ csrf_token }}';
 
     updateClock();
     updateDownlink();
@@ -23,9 +24,14 @@
         
     function updateClock() {
       var loadClockURL = '{% if user_url %}loadclock/{% else %}load_defaultclock/{% endif %}';
-      
+      var targetURL = '{{ user_url }}';
+
+    
       $.ajax({
         url: loadClockURL,
+        method: 'POST',
+        headers: { "X-CSRFToken": csrftoken },
+        data: { 'targetURL': targetURL }, // 키 이름이 'targets'가 아닌 'targetURL'로 수정되었습니다.
         success: function(data) {
           $('#servertime-container').text(data.current_servertime);
           $('#InternetDelay').text(data.InternetDelay);
@@ -33,9 +39,10 @@
         },
         error: function(xhr) {
           console.log(xhr.status + ': ' + xhr.statusText);
-          }
-        });
+        }
+      });
     }
+    
 
     function updateUplink() {
       $.ajax({
@@ -50,12 +57,18 @@
     }
 
     function updateDownlink() {
+      var pingSpeed = document.getElementById("pingSpeed").textContent;
+
       $.ajax({
         url: checkDownURL,
+        method: 'POST',
+        headers: { "X-CSRFToken": csrftoken },
+        data: { 'pingSpeed': pingSpeed }, 
         success: function(data) {
           $('#downlinkSpeed').text(data.downSpeed);
           $('#speedRanking').text(data.speed_ranking);
           $('#successRate').text(data.success);
+          $('#score').text(data.score);
         },
         error: function(xhr) {
           console.log(xhr.status + ': ' + xhr.statusText);

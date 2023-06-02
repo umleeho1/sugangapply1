@@ -1,6 +1,7 @@
 import datetime
 import time
 import ntplib
+import ping3
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
@@ -34,8 +35,17 @@ def action(request):
 
 def reload_serverclock(request):
     start_time = time.time()
-    target_url = method.get_accessurl_by_highest_id()
-    server_time = method.calculate_time(target_url.testURL)
+    '''
+    ntp_server = request.POST.get('targetURL')
+    client = ntplib.NTPClient()
+    response = client.request(ntp_server)
+    ntp_time = datetime.datetime.fromtimestamp(response.tx_time)
+    formatted_time = ntp_time.strftime("%Y년 %m월 %d일 %H시 %M분 %S초")
+    
+    '''
+    target_url = request.POST.get('targetURL')
+    print(target_url)
+    server_time = method.calculate_time(target_url)
     end_time = time.time()
     run_time = end_time - start_time
     run_time = run_time / 2   # 2RTT가 결국 InternetDelay이기 때문에 실제 서버시간 오차는 1RTT임.
@@ -63,21 +73,31 @@ def TestUpLink(request):
     return JsonResponse(response)
 
 def TestDownLink(request):
-    downSpeed = method.checkDownLink()
+    pingSpeed = request.POST.get('pingSpeed')
+    try:
+        pingSpeed = float(pingSpeed)    # 시도하여 float으로 변환
+    except ValueError:
+        pingSpeed = 30
+    print(pingSpeed)
+    
+    downSpeed = method.checkDownLink()  # 다운로드속도 확인
     result = resultInfo.objects.create(
         upSpeed = 0,
         downSpeed= downSpeed,
         pingSpeed= 0)
-    down_percentile = method.get_speed_percentile(downSpeed)
-    probability_success = method.get_success(down_percentile)
+    
+    down_percentile = method.get_speed_percentile(downSpeed)    # 다운로드속도 순위 측정
+    probability_success, score = method.get_success(down_percentile, pingSpeed, downSpeed)
     down_percentile_str = "상위 {:.2f}%입니다.".format(down_percentile)
+    score_str = "종합점수:{:.2f}".format(score)
     result.save()
-    response = {'downSpeed':downSpeed, 'speed_ranking':down_percentile_str, 'success':probability_success}    
+    response = {'downSpeed':downSpeed, 'speed_ranking':down_percentile_str, 'success':probability_success, 'score':score_str}    
     return JsonResponse(response)
 
 def TestPing(request):
-    pingSpeed = method.checkPing()
-    response = {'pingSpeed':pingSpeed}
+    hostname = 'time.bora.net'
+    response_time = round(ping3.ping(hostname) * 1000, 2)
+    response = {'pingSpeed':response_time}
     return JsonResponse(response)
 
 

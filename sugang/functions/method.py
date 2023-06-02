@@ -5,6 +5,7 @@ import datetime
 from ..views import * 
 import speedtest_cli
 import numpy as np
+import math
 
 def get_accessurl_by_highest_id():
     highest_id = accessURL.objects.order_by('-id').values_list('id', flat=True).first()
@@ -82,20 +83,50 @@ def checkPing():
     return round(st.results.ping, 1)
 
 
-def  get_success(downPercentile):
+def  get_success(downPercentile, pingSpeed, downSpeed):
     # 데이터베이스에 저장된 다운로드 속도 데이터를 가져옵니다.
     success = ''
-    percentile = round(100-downPercentile, 2)
-    # 10 20 40 20 10
-    if percentile >= 90:
-        success = '매우높음'
-    elif (percentile >=70 and percentile <90):
-        success = '높음'
-    elif (percentile >=30 and percentile <70):
-        success = '보통'
-    elif (percentile >=10 and percentile <30):
-        success = '낮음'
-    else:
-        success ='매우낮음'
+    score = 100
+    score = round(100-downPercentile, 2)
     
-    return success
+    if(pingSpeed <= 10):
+        score += 10
+    elif(pingSpeed <= 20):
+        score += 5
+    elif(pingSpeed <= 35):
+        score += 0
+    elif(pingSpeed <= 50):
+        score -= 10
+    elif(pingSpeed >= 80):
+        score -= 18
+    else:
+        score -= 30
+        
+    if downSpeed >= 10:
+        score += (10 + round(math.log(downSpeed, 3), 2))
+    elif downSpeed >= 5:
+        score += round(math.log10(downSpeed, 3), 2)
+    elif downSpeed >= 2:
+        score += 0
+    elif downSpeed <= 1:
+        score -= 5
+        
+    if score >= 90:
+        success = '매우높음'
+    elif score >= 75:
+        success = '상당히 높음'
+    elif (score >=60 and score <75):
+        success = '양호함'
+    elif (score >=40 and score <60):
+        success = '보통'
+    elif (score >=20 and score <40):
+        success = '낮음'
+    elif (score >=5 and score < 20):
+        success = '현저히 낮음'
+    else:
+        success ='매우 낮음'
+        
+    if downSpeed < 0.5 :
+        success = '측정 오류입니다.'
+    
+    return success, score
