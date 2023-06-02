@@ -27,7 +27,7 @@
         </div>
         <form method="post" action="{% url 'sugang:testURL' %}">
             {% csrf_token %}
-            <div class="input-group mb-3 URL-input">
+            <div class="input-group mb-3 URL-input-fp">
               <button class="btn btn-outline-secondary" type="submit">테스트</button>  
               <input id="saveURL" name="saveURL" type="text" class="form-control px-3" placeholder="접속하고자 하는 URL을 입력해주세요.">
             </div>
@@ -36,10 +36,7 @@
 
     <aside></aisde>
 
-    <footer>
+    <footer>    
         {% include "footer.html" %}
     </footer>
 </body>
-
-
-%}

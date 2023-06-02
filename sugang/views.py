@@ -69,8 +69,10 @@ def TestDownLink(request):
         downSpeed= downSpeed,
         pingSpeed= 0)
     down_percentile = method.get_speed_percentile(downSpeed)
+    probability_success = method.get_success(down_percentile)
+    down_percentile_str = "상위 {:.2f}%입니다.".format(down_percentile)
     result.save()
-    response = {'downSpeed':downSpeed, 'speed_ranking':down_percentile}    
+    response = {'downSpeed':downSpeed, 'speed_ranking':down_percentile_str, 'success':probability_success}    
     return JsonResponse(response)
 
 def TestPing(request):

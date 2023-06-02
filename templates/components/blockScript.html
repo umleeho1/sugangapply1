@@ -55,6 +55,7 @@
         success: function(data) {
           $('#downlinkSpeed').text(data.downSpeed);
           $('#speedRanking').text(data.speed_ranking);
+          $('#successRate').text(data.success);
         },
         error: function(xhr) {
           console.log(xhr.status + ': ' + xhr.statusText);
@@ -82,13 +83,26 @@
     var audio = new Audio("{% static 'sound/beep.mp3' %}");
     var alarmTimeInput = document.getElementById("alarm-time");
     var selectedRadio = document.querySelector('input[name="set_alarm"]:checked');
+    
+    var alarmTime = alarmTimeInput.value;   // 알람위젯 값 설정 위한 변수
+    var alarmTimeBefore = selectedRadio.value;  // 알람위젯 값 설정 위한 변수
+    alarmTimeBefore = alarmTimeBefore.toString();
+    alarmTimeBefore = alarmTimeBefore + "초 전";
+    
+    var alarmNotificationElement = document.getElementById("AlarmNotification");
+    alarmNotificationElement.textContent = alarmTime;
+    var alarmNotificationBeforeElement = document.getElementById("AlarmNotification-Before");
+    alarmNotificationBeforeElement.textContent = alarmTimeBefore;
+
 
     if (alarmTimeInput) {
       var alarmTime = alarmTimeInput.value;
       var [hours, minutes] = alarmTime.split(":"); // hours, minutes [시간, 분] , 24시간 체계
       var hoursInt = parseInt(hours, 10);
       var minutesInt = parseInt(minutes, 10);
-      var totalInt = hoursInt*3600 + minutesInt*60
+      var deltaTime = parseInt(selectedRadio.value, 10);  // 30 or 60 or 180
+
+      var totalInt = hoursInt*3600 + minutesInt*60 - deltaTime;
 
       var timeParts = current_time_ajax.split(" ");
       var c_hours = timeParts[3].substr(0, 2);
@@ -102,8 +116,7 @@
       if (totalInt > current_total) {
         var timeDifference = totalInt - current_total
         timeoutID = setTimeout(function() {
-          // audio.play();
-          alert(timeDifference+ "초 차이")
+          audio.play();
         }, timeDifference*1000);
 
       }
@@ -115,5 +128,6 @@
       alert("알람기준시간을 선택해주세요.")
     }
   });
-
+</script>
+<script>
 </script>

@@ -81,3 +81,21 @@ def checkPing():
     st.get_best_server()
     return round(st.results.ping, 1)
 
+
+def  get_success(downPercentile):
+    # 데이터베이스에 저장된 다운로드 속도 데이터를 가져옵니다.
+    success = ''
+    percentile = round(100-downPercentile, 2)
+    # 10 20 40 20 10
+    if percentile >= 90:
+        success = '매우높음'
+    elif (percentile >=70 and percentile <90):
+        success = '높음'
+    elif (percentile >=30 and percentile <70):
+        success = '보통'
+    elif (percentile >=10 and percentile <30):
+        success = '낮음'
+    else:
+        success ='매우낮음'
+    
+    return success

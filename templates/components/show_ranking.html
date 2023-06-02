@@ -1,3 +1,5 @@
+{%load static%}
+
 <style>
     .card-speedrank {
         display: flex;
@@ -15,12 +17,14 @@
 
 <div class="main-rankingbox">
     <div class="card text-center">
-        <div class="card-header">
-            인터넷 속도 랭킹
+        <div class="card-header" style="display: flex; align-items: center; justify-content: center;">
+            <div><img src="{% static 'img/rank.png' %}" style="width:20px; height:20px;"></div>
+            <div>　인터넷 속도 랭킹　</div>
+            <div><img src="{% static 'img/rank.png' %}" style="width:20px; height:20px;"></div>
         </div>
         <div class="card-body card-speedrank" style="height:200px;">
             <div style="display: flex; flex-direction: column; justify-content: center;">
-                <p class="card-text" style="margin: 0 auto;">상위 <span id="speedRanking"></span>%입니다.</p>
+                <p class="card-text" style="margin: 0 auto;"><span id="speedRanking">측정중...</span></p>
             </div>
         </div>
     </div>

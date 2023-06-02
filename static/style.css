@@ -66,9 +66,15 @@ header {
     height: 57px;
 }
 
+div.URL-input-fp {
+    margin: 10px 150px;
+    width: 80%;
+}
+
 footer {
     height: 100px;
-    background-color: rgb(186, 255, 254);
+    background-color: rgb(213, 213, 213);
+    color: rgb(0, 0, 0);
     vertical-align: middle;
     text-align: center;
 }
@@ -143,7 +149,7 @@ section.result-table {
 
 div.advertisements {
     bottom: 0;
-    height: 100px;
+    height: 200px;
     background-color: #6a6a6a;
 }
 
@@ -172,4 +178,11 @@ div.advertisements {
     float: left;
     width: 30%;
     height: 260px;
+}
+
+.footing {
+    margin-top: 50px !important;
+    max-width: 100%;
+    margin: auto;
+    text-align: center;
 }
