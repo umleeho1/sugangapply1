@@ -1,1 +1,6 @@
 pip install requests
+pip install datetime
+pip install ntplib
+pip install speedtest_cli
+pip install numpy
+pip install urllib
