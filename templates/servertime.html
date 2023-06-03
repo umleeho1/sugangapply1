@@ -1,0 +1,18 @@
+<table class="table table-light table-striped-colums">
+    <thead>
+      <tr>
+        {% if user_url %}
+        <th class="text-center">'{{ user_url }}' 의 서버시간</th>
+        {% else %}
+        <th class="text-center">이 사이트의 서버시간</th>
+        {% endif %}
+      </tr>
+    </tead>
+    <tbody>
+      <tr>
+        <td class="text-center" style="height:100px; vertical-align:middle; font-size: 1.5em;">
+          <p id="servertime-container">{{ current_servertime }}</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>

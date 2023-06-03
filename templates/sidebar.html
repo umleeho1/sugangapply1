@@ -1,30 +1,104 @@
+{% load static %}
 <div style="line-height: 20%;">
     <br>
 </div>
 
 <div class="container-fluid">
-    <div id="chatbox" class="sidebar-chatbox"></div> 
+    <div style="height:10px;"></div>
+    <div class="card border-info mb-3" style="max-width: 18rem;">
+        <div class="card-header" style="display: flex; align-items: center; justify-content: center;">
+            <div>
+                <img src="{% static 'img/timer.png' %}" alt="이미지_설명" style="width:20px; height:20px;">
+            </div>
+            <div style="margin: 0 10px;">
+                알람
+            </div>
+            <div>
+            <img src="{% static 'img/timer.png' %}" alt="이미지_설명" style="width:20px; height:20px;">
+            </div>
+        </div>
+        <div class="card-body">
+            <h6 class="card-title text-center">알람울릴시간</h6>
+            <p class="card-text text-center"><span  id="AlarmNotification" style="font-size:24px;">00:00</span> <span id="AlarmNotification-Before" style="font-size:15px;">(미설정)</span></p>
+        </div>
+    </div>
+
+    <div name="chatbox"class="sidebar-chatbox">
+        <span style="font-size:11px; display: block;" id="chattingBox"></span>
+    </div> 
     <!-- 실시간 채팅 박스 -->
     <div class="input-group input-group-sm">
-        <input type="text" class="form-control" placeholder="내용을 입력하세요">
+        <input type="text" class="form-control" placeholder="메세지를 입력하세요" id="message_contents">
         <div class="input-group-append px-2">
-          <button class="btn-sm btn-outline-secondary" type="button">전송하기</button>
-        </div>
-    </div>
-      
-
-        <!-- Total / Today 위젯 -->
-    <div class="sidebar-menubox">
-        <div id="widget" class="widget" style="text-align: center;">
-            <div><p id="total">Total / Today</p></div>
-            <div><p>0 / 0</p></div>
+          <button class="btn-sm btn-outline-secondary" type="button" id="CommentSendBtn">전송하기</button>
         </div>
     </div>
 
+    <div style="height:10px;"></div> <!-- 위젯별 간격 -->
+
+
+    <div>
+        <button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#SpeedTestInformation" aria-controls="SpeedTestInformation" style="width:100%;">
+            속도측정 정보
+        </button>
+    </div>
+    <div style="height:5px;"></div>
+    <div>
+        <button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#SpeedRankingInformation" aria-controls="SpeedRankingInformation" style="width:100%;">
+            속도랭킹 & 성공확률 정보
+        </button>
+    </div>
+    <div style="height:5px;"></div>
+    <div>
+        <button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#ServertimeInformation" aria-controls="ServertimeInformation" style="width:100%;">
+            서버시간 정보
+        </button>
+    </div>
+    
      <!-- 광고 영역 -->
     <div id="ad" class="sidebar-adbox" style="vertical-align:middle;">
         <!-- 광고 내용 -->
         <h6 style="vertical-align:middle;">이곳에 광고가 표시됩니다.</h6>
+    </div>
+
+
+    <div name="OFFCANVAS INFO">
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="SpeedTestInformation" aria-labelledby="SpeedTestInformationLabel">
+            <div class="offcanvas-header">
+                <h3 class="offcanvas-title" id="SpeedTestInformationLabel" style="text-align:center;">속도측정</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p>현재 사용중인 인터넷상태를 점검합니다.</p><br>
+                <p><span style="font-size:20px;">Uplink 속도측정</span><br>25초~30초 간격으로 측정합니다.<br></p>
+                <p><span style="font-size:20px;">Downlink 속도측정</span><br>25초~35초 간격으로 측정합니다.<br></p>
+                <p><span style="font-size:20px;">Ping측정</span><br>10초 간격으로 측정합니다.<br></p>
+                <p>일반적으로, Downlink의 속도가 20MBps이상이며 Ping속도가 20ms이하라면, 수강신청에 지장이 없습니다.</p>
+            </div>
+        </div>
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="SpeedRankingInformation" aria-labelledby="SpeedRankingInformationLabel">
+            <div class="offcanvas-header">
+                <h3 class="offcanvas-title" id="SpeedRankingInformationLabel" style="text-align:center;">랭킹 & 성공확률 측정</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p><span style="font-size:20px;">인터넷속도 순위</span><br>지금까지 본 사이트를 이용하여 인터넷속도를 측정한 데이터를 종합하여 순위를 매깁니다.<br></p>
+                <br style="height:5px;">
+                <p><span style="font-size:20px;">수강신청 성공확률</span><br>수강신청&티켓팅에 직접적으로 관여하는 Downlink속도 및
+                    Ping속도 정보, 인터넷속도 랭킹 정보를 종합하여 '매우높음'~'매우낮음'으로 총 7단계로 표시합니다. 어디까지나, 개발자의 의견이기 때문에
+                    참고 지표로만 활용하시기 바랍니다.<br></p>
+            </div>
+        </div>
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="ServertimeInformation" aria-labelledby="ServertimeInformationLabel">
+            <div class="offcanvas-header">
+                <h3 class="offcanvas-title" id="ServertimeInformationLabel" style="text-align:center;">서버시간 측정</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p><span style="font-size:20px;">서버시간</span>
+                    <br>해당서버의 시간을 매 초마다 가져옵니다. 이때, Internet Latency를 계산하여 실제 서버시간과 몇 밀리초 차이가 나는지 보여줍니다.<br></p>
+            </div>
+        </div>
     </div>
 
 </div>

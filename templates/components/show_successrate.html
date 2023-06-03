@@ -1,11 +1,18 @@
+{%load static%}
+
 <div class="main-ratebox">
     <div class="card text-center">
-        <div class="card-header">
-            수강신청 성공확률
+        <div class="card-header" style="display: flex; align-items: center; justify-content: center;">
+            <div><img src="{% static 'img/percentage.png' %}" style="width:20px; height:20px;"></div>    
+            <div>　종합점수 / 수강신청 성공확률　</div>
+            <div><img src="{% static 'img/percentage.png' %}" style="width:20px; height:20px;"></div>
         </div>
-        <div class="card-body" style="height:200px;">
-            <h5 class="card-title">귀하의 수강신청 확률은..</h5>
-            <p class="card-text" style="marign:auto;">{{ apply_rate|default:''}}입니다.</p>
-        </div>
+        <div class="card-body successRate-card" style="height:200px; display: flex; align-items: center; justify-content: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
+                <p class="card-text" style="font-size: 30px; margin:auto;">
+                    <span id="score" style = "font-size: 20px;">점수:측정중..</span><br>
+                    <span id="successRate">확률:측정중...</span></p>    
+            </div>
+        </div>        
     </div>
 </div>

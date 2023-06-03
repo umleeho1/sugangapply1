@@ -19,6 +19,7 @@
       {% include "components/speedtest_result.html" %}    
     </section>
 
+    
     <section style="display: flex; align-items: center; justify-content: center; height: 260px;">
       <!-- 결과화면 두 곳을 float할 구역-->
       
@@ -31,23 +32,5 @@
 {% endblock%}
 
 {% block script %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        setInterval(function() {
-            var ajaxURL = '{{ user_url }}';
-            if (ajaxURL === '') {
-                ajaxURL = 'load_defaultclock/';
-            } else {
-                ajaxURL = 'loadclock/';
-            }
-            $.ajax({
-                url: ajaxURL,
-                success: function(data) {
-                    $('#servertime-container').text(data.current_servertime);
-                }
-            });
-        }, 1000);
-    });
-</script>
+    {% include 'components/blockScript.html'%}
 {% endblock %}
