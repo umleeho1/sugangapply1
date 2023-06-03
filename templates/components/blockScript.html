@@ -30,7 +30,7 @@
       $.ajax({
         url: loadClockURL,
         method: 'POST',
-        headers: { "X-CSRFToken": csrftoken },
+        headers: { "X-CSRFToken": csrftoken, "Connection": "keep-alive" },
         data: { 'targetURL': targetURL }, // 키 이름이 'targets'가 아닌 'targetURL'로 수정되었습니다.
         success: function(data) {
           $('#servertime-container').text(data.current_servertime);
@@ -93,7 +93,7 @@
   document.getElementById("alarm-form").addEventListener("submit", function(event) {
     event.preventDefault(); // 폼 제출 기본 동작 막기
       
-    var audio = new Audio("{% static 'sound/beep.mp3' %}");
+    var audio = new Audio("{% static 'sound/alarm.mp3' %}");
     var alarmTimeInput = document.getElementById("alarm-time");
     var selectedRadio = document.querySelector('input[name="set_alarm"]:checked');
     
@@ -115,7 +115,7 @@
       var minutesInt = parseInt(minutes, 10);
       var deltaTime = parseInt(selectedRadio.value, 10);  // 30 or 60 or 180
 
-      var totalInt = hoursInt*3600 + minutesInt*60 - deltaTime;
+      var totalInt = hoursInt*3600 + minutesInt*60 - deltaTime - 1;
 
       var timeParts = current_time_ajax.split(" ");
       var c_hours = timeParts[3].substr(0, 2);
@@ -124,7 +124,7 @@
       var c_hoursInt = parseInt(c_hours, 10);
       var c_minutesInt = parseInt(c_minutes, 10);
       var c_secondsInt = parseInt(c_seconds, 10);
-      var current_total = c_hoursInt*3600 + c_minutesInt*60 + c_secondsInt
+      var current_total = c_hoursInt*3600 + c_minutesInt*60 + c_secondsInt 
  
       if (totalInt > current_total) {
         var timeDifference = totalInt - current_total
