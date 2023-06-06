@@ -19,4 +19,9 @@ urlpatterns = [
     path('checkUpLink/', views.TestUpLink),
     path('checkDownLink/', views.TestDownLink),
     path('checkPing/', views.TestPing),
+    path('sendMessage/', views.send_message),
+    path('result/sendMessage/', views.send_message),
+    path('readMessage/', views.read_message),
+    path('result/readMessage/', views.read_message),
+    
 ]

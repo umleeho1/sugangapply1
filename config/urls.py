@@ -21,6 +21,7 @@ from . import views
 app_name = 'config'
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('main/', include('sugang.urls')),
     path('', views.welcome_page, name='welcome_page'),
 ]

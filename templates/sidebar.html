@@ -4,18 +4,12 @@
 </div>
 
 <div class="container-fluid">
-    <div style="height:10px;"></div>
+    <div style="height:5px;"></div>
     <div class="card border-info mb-3" style="max-width: 18rem;">
         <div class="card-header" style="display: flex; align-items: center; justify-content: center;">
-            <div>
-                <img src="{% static 'img/timer.png' %}" alt="이미지_설명" style="width:20px; height:20px;">
-            </div>
-            <div style="margin: 0 10px;">
-                알람
-            </div>
-            <div>
-            <img src="{% static 'img/timer.png' %}" alt="이미지_설명" style="width:20px; height:20px;">
-            </div>
+            <div><img src="{% static 'img/timer.png' %}" alt="이미지_설명" style="width:20px; height:20px;"></div>
+            <div style="margin: 0 10px;">알람</div>
+            <div><img src="{% static 'img/timer.png' %}" alt="이미지_설명" style="width:20px; height:20px;"></div>
         </div>
         <div class="card-body">
             <h6 class="card-title text-center">알람울릴시간</h6>
@@ -23,16 +17,18 @@
         </div>
     </div>
 
-    <div id="chatbox" class="sidebar-chatbox"></div> 
+    <div name="chatbox"class="sidebar-chatbox">
+        <span style="font-size:11px; display: block;" id="chattingBox"></span>
+    </div> 
     <!-- 실시간 채팅 박스 -->
     <div class="input-group input-group-sm">
-        <input type="text" class="form-control" placeholder="내용을 입력하세요">
+        <input type="text" class="form-control" placeholder="메세지를 입력하세요" id="message_contents">
         <div class="input-group-append px-2">
-          <button class="btn-sm btn-outline-secondary" type="button">전송하기</button>
+          <button class="btn-sm btn-outline-secondary" type="button" id="CommentSendBtn">전송하기</button>
         </div>
     </div>
 
-    <div style="height:10px;"></div> <!-- 위젯별 간격 -->
+    <div style="height:5px;"></div> <!-- 위젯별 간격 -->
 
 
     <div>
@@ -54,14 +50,35 @@
     </div>
     
      <!-- 광고 영역 -->
-    <div id="ad" class="sidebar-adbox" style="vertical-align:middle;">
-        <!-- 광고 내용 -->
-        <h6 style="vertical-align:middle;">이곳에 광고가 표시됩니다.</h6>
+    <div class="sidebar-adbox" name="adbox" style="vertical-align:middle; margin-top: 10px;">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <a href="https://dankook.ac.kr/" target="_blank"><img src="{% static 'img/adimg1.jpg' %}" class="d-block w-100" alt="..."></a>
+              </div>
+              <div class="carousel-item">
+                <a href="https://dankook.ac.kr/" target="_blank"><img src="{% static 'img/adimg2.jpg' %}" class="d-block w-100" alt="..." href="https://dankook.ac.kr/"></a>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
     </div>
 
 
     <div name="OFFCANVAS INFO">
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="SpeedTestInformation" aria-labelledby="SpeedTestInformationLabel">
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="SpeedTestInformation" 
+        aria-labelledby="SpeedTestInformationLabel">
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title" id="SpeedTestInformationLabel" style="text-align:center;">속도측정</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -74,7 +91,8 @@
                 <p>일반적으로, Downlink의 속도가 20MBps이상이며 Ping속도가 20ms이하라면, 수강신청에 지장이 없습니다.</p>
             </div>
         </div>
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="SpeedRankingInformation" aria-labelledby="SpeedRankingInformationLabel">
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="SpeedRankingInformation" 
+        aria-labelledby="SpeedRankingInformationLabel">
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title" id="SpeedRankingInformationLabel" style="text-align:center;">랭킹 & 성공확률 측정</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -87,7 +105,8 @@
                     참고 지표로만 활용하시기 바랍니다.<br></p>
             </div>
         </div>
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="ServertimeInformation" aria-labelledby="ServertimeInformationLabel">
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="ServertimeInformation" 
+        aria-labelledby="ServertimeInformationLabel">
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title" id="ServertimeInformationLabel" style="text-align:center;">서버시간 측정</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>

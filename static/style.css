@@ -120,21 +120,18 @@ div.sidebar-menubox {
 }
 
 div.sidebar-chatbox {
-    border: 2px solid rgb(228, 228, 228);
-    border-radius: 10px;
-    height: 80px;
+    border: 1px solid rgb(0, 0, 0);
+    height: 180px;
     padding: 10px;
     overflow-y: scroll;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-bottom: 5px;
-    background: aqua;
+    background: rgb(255, 255, 255);
 }
 
 div.sidebar-adbox {
-    border: 2px solid rgb(228, 228, 228);
-    padding: 6px;
-    margin: 10px 0px;
-    height: 100px;
+    border: 2px solid rgb(164, 164, 164);
+    margin: 5px 0px;
     background-color: #9f9f9f;
     text-align: center;
     vertical-align: middle;
@@ -145,12 +142,6 @@ section.result-table {
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
-}
-
-div.advertisements {
-    bottom: 0;
-    height: 200px;
-    background-color: #6a6a6a;
 }
 
 .main-ratebox {
@@ -185,4 +176,10 @@ div.advertisements {
     max-width: 100%;
     margin: auto;
     text-align: center;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }

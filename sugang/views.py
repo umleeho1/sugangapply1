@@ -40,7 +40,7 @@ def reload_serverclock(request):
     server_time = method.calculate_time(target_url)
     end_time = time.time()
     run_time = end_time - start_time
-    run_time = run_time / 4   # 2RTT가 결국 TCP요청이 갔다가 오는데 걸리는 시간이며, 패킷로스가 없다는 가정하에, -> <- -> <- 네번의 과정에 시간정보가 도착함.
+    run_time = run_time / 4   # 2RTT가 결국 InternetDelay이기 때문에 실제 서버시간 오차는 1RTT임.
     run_time = round(run_time * 1000, 2)
     print("Load Clock time : ", str(run_time))
     return JsonResponse({'current_servertime':server_time, 'InternetDelay':run_time})
@@ -71,13 +71,11 @@ def TestDownLink(request):
     except ValueError:
         pingSpeed = 30
     print(pingSpeed)
-    
     downSpeed = method.checkDownLink()  # 다운로드속도 확인
     result = resultInfo.objects.create(
         upSpeed = 0,
         downSpeed= downSpeed,
         pingSpeed= 0)
-    
     down_percentile = method.get_speed_percentile(downSpeed)    # 다운로드속도 순위 측정
     probability_success, score = method.get_success(down_percentile, pingSpeed, downSpeed)
     down_percentile_str = "상위 {:.2f}%입니다.".format(down_percentile)
@@ -92,4 +90,21 @@ def TestPing(request):
     response = {'pingSpeed':response_time}
     return JsonResponse(response)
 
-
+def send_message(request):
+    if request.method == 'POST':
+        message = request.POST.get('message_content')
+        # Comment 모델을 사용하여 댓글 저장
+        print("입력" + message)
+        comment = Comment(content=message)
+        comment.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'})
+    
+def read_message(request):
+    Comment_lists = Comment.objects.order_by('-created_at')[:30]
+    Comment_lists_str = ''
+    for data in Comment_lists:
+        Comment_lists_str += ">>{}<br>".format(data.content)
+    response = {'Comment_list':Comment_lists_str}
+    return JsonResponse(response)
