@@ -1,0 +1,198 @@
+{% load static %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  var current_time_ajax; 
+  var timeoutID; // 알람 예약에 사용되는 타임아웃 식별자
+
+  $(document).ready(function() {
+    var ClockInterval = 1000;
+    var checkUpURL = 'checkUpLink/';
+    var checkDownURL = 'checkDownLink/';
+    var checkPingURL = 'checkPing/';
+    var csrftoken = '{{ csrf_token }}';
+
+    updateClock();
+    updateDownlink();
+    updateUplink();
+    updatePingSpeed();
+
+    $.ajax({
+      url: "readMessage/",  // 요청을 보낼 URL
+      success: function(response) {
+        var commentList = response.Comment_list.replace(/\n/g, "<br>");
+        $('#chattingBox').html(commentList);
+      },
+      error: function(xhr, status, error) {
+        // 오류표시
+      }
+    });   // 채팅내역 로딩해놓기
+        
+    setInterval(updateClock, ClockInterval);
+    setInterval(updateDownlink, 30000);
+    setInterval(updateUplink, 35000);
+    setInterval(updatePingSpeed, 10000);
+        
+    function updateClock() {
+      var loadClockURL = '{% if user_url %}loadclock/{% else %}load_defaultclock/{% endif %}';
+      var targetURL = '{{ user_url }}';
+
+    
+      $.ajax({
+        url: loadClockURL,
+        method: 'POST',
+        headers: { "X-CSRFToken": csrftoken, "Connection": "keep-alive" },
+        data: { 'targetURL': targetURL }, // 키 이름이 'targets'가 아닌 'targetURL'로 수정되었습니다.
+        success: function(data) {
+          $('#servertime-container').text(data.current_servertime);
+          $('#InternetDelay').text(data.InternetDelay);
+          current_time_ajax = data.current_servertime;
+        },
+        error: function(xhr) {
+          console.log(xhr.status + ': ' + xhr.statusText);
+        }
+      });
+    }
+    
+
+    function updateUplink() {
+      $.ajax({
+        url: checkUpURL,
+        success: function(data) {
+          $('#uplinkSpeed').text(data.upSpeed);
+        },
+        error: function(xhr) {
+          console.log(xhr.status + ': ' + xhr.statusText);
+        }
+      });            
+    }
+
+    function updateDownlink() {
+      var pingSpeed = document.getElementById("pingSpeed").textContent;
+
+      $.ajax({
+        url: checkDownURL,
+        method: 'POST',
+        headers: { "X-CSRFToken": csrftoken },
+        data: { 'pingSpeed': pingSpeed }, 
+        success: function(data) {
+          $('#downlinkSpeed').text(data.downSpeed);
+          $('#speedRanking').text(data.speed_ranking);
+          $('#successRate').text(data.success);
+          $('#score').text(data.score);
+        },
+        error: function(xhr) {
+          console.log(xhr.status + ': ' + xhr.statusText);
+        }
+      });    
+    }
+
+    function updatePingSpeed() {
+      $.ajax({
+        url: checkPingURL,
+        success: function(data) {
+          $('#pingSpeed').text(data.pingSpeed);
+        },
+        error: function(xhr) {
+          console.log(xhr.status + ': ' + xhr.statusText);
+        }
+      });            
+    }
+  });
+
+
+  document.getElementById("alarm-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // 폼 제출 기본 동작 막기
+      
+    var audio = new Audio("{% static 'sound/alarm.mp3' %}");
+    var alarmTimeInput = document.getElementById("alarm-time");
+    var selectedRadio = document.querySelector('input[name="set_alarm"]:checked');
+    
+    var alarmTime = alarmTimeInput.value;   // 알람위젯 값 설정 위한 변수
+    var alarmTimeBefore = selectedRadio.value;  // 알람위젯 값 설정 위한 변수
+    alarmTimeBefore = alarmTimeBefore.toString();
+    alarmTimeBefore = alarmTimeBefore + "초 전";
+    
+    var alarmNotificationElement = document.getElementById("AlarmNotification");
+    alarmNotificationElement.textContent = alarmTime;
+    var alarmNotificationBeforeElement = document.getElementById("AlarmNotification-Before");
+    alarmNotificationBeforeElement.textContent = alarmTimeBefore;
+
+
+    if (alarmTimeInput) {
+      var alarmTime = alarmTimeInput.value;
+      var [hours, minutes] = alarmTime.split(":"); // hours, minutes [시간, 분] , 24시간 체계
+      var hoursInt = parseInt(hours, 10);
+      var minutesInt = parseInt(minutes, 10);
+      var deltaTime = parseInt(selectedRadio.value, 10);  // 30 or 60 or 180
+
+      var totalInt = hoursInt*3600 + minutesInt*60 - deltaTime;
+
+      var timeParts = current_time_ajax.split(" ");
+      var c_hours = timeParts[3].substr(0, 2);
+      var c_minutes = timeParts[4].substr(0, 2);
+      var c_seconds = timeParts[5].substr(0, 2);
+      var c_hoursInt = parseInt(c_hours, 10);
+      var c_minutesInt = parseInt(c_minutes, 10);
+      var c_secondsInt = parseInt(c_seconds, 10);
+      var current_total = c_hoursInt*3600 + c_minutesInt*60 + c_secondsInt
+ 
+      if (totalInt > current_total) {
+        var timeDifference = totalInt - current_total
+        timeoutID = setTimeout(function() {
+          audio.play();
+        }, timeDifference*1000);
+
+      }
+      else {
+        alert("알람을 설정할 수 없습니다!");
+      }
+    }  
+    else {
+      alert("알람기준시간을 선택해주세요.")
+    }
+  });
+</script>
+<script>
+  var csrftoken = '{{ csrf_token }}';
+
+  // 채팅 관련 script
+  $(document).ready(function() {
+    // 전송하기 버튼 클릭 이벤트 처리
+    $("#CommentSendBtn").click(function() {
+      // 입력된 내용 가져오기
+      var content = document.getElementById("message_contents").value;
+      var inputbox = document.getElementById("message_contents");
+      
+
+      // Ajax 요청
+      $.ajax({
+        url: "sendMessage/",  // 요청을 보낼 URL
+        headers: { "X-CSRFToken": csrftoken },
+        method: "POST",       // HTTP 메서드 (POST로 설정)
+        data: {
+          'message_content': content    // 전송할 데이터 (내용)
+        },
+        success: function(response) {
+          // 첫 번째 요청 성공 후 실행할 코드
+          inputbox.value = '';
+
+          // 두 번째 요청
+          $.ajax({
+            url: "readMessage/",  // 요청을 보낼 URL
+            success: function(getData) {
+              var commentList = getData.Comment_list.replace(/\n/g, "<br>");
+              $('#chattingBox').html(commentList);
+            },
+            error: function(xhr, status, error) {
+              // 오류표시
+            }
+          });
+        },
+        error: function(xhr, status, error) {
+          // 오류표시
+        }
+      });
+    });
+  });
+</script>

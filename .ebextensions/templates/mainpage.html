@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+    <!-- 블럭 안에 들어갈 내용-->
+
+    <!-- 확인하고자 하는 URL 입력창 & 버튼 -->
+    <form method="post" action="{% url 'sugang:testURL' %}">
+      {% csrf_token %}
+      <div class="input-group mb-3 URL-input">
+        <button class="btn btn-outline-secondary" type="submit">테스트</button>  
+        <input id="saveURL" name="saveURL" type="text" class="form-control px-3" placeholder="접속하고자 하는 URL을 입력해주세요.">
+      </div>
+    </form>
+
+    <section class="result-table">
+      {% include "components/servertime.html" %}
+      {% include "components/speedtest_result.html" %}    
+    </section>
+
+    
+    <section style="display: flex; align-items: center; justify-content: center; height: 260px;">
+      <!-- 결과화면 두 곳을 float할 구역-->
+      
+      {% include 'components/set_alarm.html' %}
+      {% include 'components/show_ranking.html' %}
+      {% include 'components/show_successrate.html' %}
+
+    </section>
+  
+{% endblock%}
+
+{% block script %}
+    {% include 'components/blockScript.html'%}
+{% endblock %}
